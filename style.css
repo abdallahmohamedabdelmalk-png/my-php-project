@@ -1,0 +1,104 @@
+/* ================= GENERAL ================= */
+
+body {
+    background: #f5f7fb;
+    font-family: Arial, sans-serif;
+}
+
+
+/* ================= LOGIN CARD ================= */
+
+.login-card {
+    width: 100%;
+    max-width: 420px;
+
+    background: white;
+
+    padding: 40px;
+
+    border-radius: 20px;
+
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+
+/* ================= LOGO ================= */
+
+.portal-logo {
+    width: 60px;
+    height: 60px;
+
+    margin: 0 auto 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 16px;
+
+    background: #0d6efd;
+    color: white;
+
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+/* ================= TITLE ================= */
+
+.login-card h2 {
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+
+/* ================= INPUTS ================= */
+
+.modern-input {
+    height: 48px;
+
+    border-radius: 12px;
+
+    border: 1px solid #dee2e6;
+
+    padding: 12px 15px;
+}
+
+
+/* ================= INPUT FOCUS ================= */
+
+.modern-input:focus {
+    border-color: #0d6efd;
+
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.12);
+}
+
+
+/* ================= LOGIN BUTTON ================= */
+
+.login-btn {
+    height: 48px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #0d6efd;
+
+    color: white;
+
+    font-weight: 600;
+
+    transition: 0.2s;
+}
+
+
+/* ================= BUTTON HOVER ================= */
+
+.login-btn:hover {
+    background: #0b5ed7;
+
+    color: white;
+
+    transform: translateY(-1px);
+}
