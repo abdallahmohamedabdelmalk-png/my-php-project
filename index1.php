@@ -41,8 +41,7 @@
 
 
             <!-- Login Form -->
-            <form method="post"action="login.php">
-
+       <form method="post" action="login.php">
                 <!-- Email -->
                 <div class="mb-3">
 
@@ -55,6 +54,8 @@
                         name="email"
                         class="form-control modern-input"
                         placeholder="Enter your email"
+                        required
+
                     >
 
                 </div>
@@ -72,6 +73,8 @@
                         name="password"
                         class="form-control modern-input"
                         placeholder="Enter your password"
+                        required
+
                     >
 
                 </div>

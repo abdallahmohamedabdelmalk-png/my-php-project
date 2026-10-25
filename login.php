@@ -1,22 +1,62 @@
+
+
 <?php
+session_start();
+require "db.php";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] !== "POST") {
+    header("Location: index1.php");
+    exit;
+}
 
-    $email = $_POST["email"];
-    $password = $_POST["password"];
+$email = trim($_POST["email"] ?? "");
+$password = $_POST["password"] ?? "";
 
-    $correctEmail = "abdallah@gmail.com";
-    $correctPassword = "123456";
+$stmt = $pdo->prepare(
+    "SELECT * FROM students WHERE email = ? LIMIT 1"
+);
+$stmt->execute([$email]);
 
-    if ($email == $correctEmail && $password == $correctPassword) {
+$student = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        header("Location:dashbord.php");
-        exit;
-    } else {
+$passwordMatches = false;
 
-        echo "Invalid Email or Password";
+if ($student) {
+    $storedPassword = $student["password"];
 
+    if (password_verify($password, $storedPassword)) {
+        $passwordMatches = true;
+    } elseif (
+        strlen($storedPassword) < 8 &&
+        hash_equals($storedPassword, $password)
+    ) {
+        // Migrate an old plaintext password to a secure hash.
+        $newHash = password_hash($password, PASSWORD_DEFAULT);
+
+        $update = $pdo->prepare(
+            "UPDATE students SET password = ? WHERE id = ?"
+        );
+        $update->execute([$newHash, $student["id"]]);
+
+        $student["password"] = $newHash;
+        $passwordMatches = true;
     }
 }
 
-?>
+if ($student && $passwordMatches) {
+
+    session_regenerate_id(true);
+
+    $_SESSION["logged_in"] = true;
+    $_SESSION["student_name"] = $student["name"];
+    $_SESSION["student_age"] = $student["age"];
+    $_SESSION["student_grade"] = $student["grade"];
+    $_SESSION["student_email"] = $student["email"];
+
+    header("Location: dashbord.php");
+    exit;
+
+} else {
+    header("Location: index1.php?error=invalid");
+    exit;
+}
