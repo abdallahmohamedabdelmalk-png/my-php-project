@@ -102,3 +102,9 @@ body {
 
     transform: translateY(-1px);
 }
+.success-message {
+    padding: 12px;
+    color: #166534;
+    background: #dcfce7;
+    border-radius: 8px;
+}

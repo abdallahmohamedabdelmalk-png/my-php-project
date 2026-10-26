@@ -19,35 +19,47 @@ $stmt->execute([$email]);
 
 $student = $stmt->fetch(PDO::FETCH_ASSOC);
 
+
 $passwordMatches = false;
 
 if ($student) {
     $storedPassword = $student["password"];
 
+    // Check passwords that are already hashed.
     if (password_verify($password, $storedPassword)) {
         $passwordMatches = true;
-    } elseif (
-        strlen($storedPassword) < 8 &&
-        hash_equals($storedPassword, $password)
-    ) {
-        // Migrate an old plaintext password to a secure hash.
-        $newHash = password_hash($password, PASSWORD_DEFAULT);
+    } else {
+        // Check whether the stored password is legacy plain text.
+        $info = password_get_info($storedPassword);
 
-        $update = $pdo->prepare(
-            "UPDATE students SET password = ? WHERE id = ?"
-        );
-        $update->execute([$newHash, $student["id"]]);
+        if (
+        empty($info["algo"]) &&
+            hash_equals($storedPassword, $password)
+        ) {
+            $newHash = password_hash($password, PASSWORD_DEFAULT);
 
-        $student["password"] = $newHash;
-        $passwordMatches = true;
+            $update = $pdo->prepare(
+                "UPDATE students SET password = ? WHERE id = ?"
+            );
+
+            $update->execute([$newHash, $student["id"]]);
+
+            $student["password"] = $newHash;
+            $passwordMatches = true;
+        }
     }
 }
+
+
 
 if ($student && $passwordMatches) {
 
     session_regenerate_id(true);
 
     $_SESSION["logged_in"] = true;
+    $_SESSION["user_id"] = (int) $student["id"];
+    $_SESSION["role"] = $student["role"];
+
     $_SESSION["student_name"] = $student["name"];
     $_SESSION["student_age"] = $student["age"];
     $_SESSION["student_grade"] = $student["grade"];

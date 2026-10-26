@@ -89,6 +89,17 @@
                 </button>
 
             </form>
+            
+            </form>
+
+            <!-- Register Link -->
+            <div class="text-center mt-4">
+                <p class="mb-2">Don't have an account?</p>
+                <a href="register.php" class="btn btn-outline-primary w-100">
+                    Create New Account
+                </a>
+            </div>
+
 
 
             <!-- Footer -->
